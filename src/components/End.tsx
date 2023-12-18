@@ -14,13 +14,13 @@ function End() {
   };
 
   useEffect(() => {
-    const container = document.querySelector('.fireworks-container');
+    const container = document.querySelector('.fireworks-container') as HTMLElement;
     if (container) {
       createFireworks(container);
     }
   }, []);
-
-  const createFireworks = (container: Element) => {
+  
+  const createFireworks = (container: HTMLElement) => {
     const numberOfFireworks = 10;
 
     for (let i = 0; i < numberOfFireworks; i++) {
@@ -39,15 +39,14 @@ function End() {
     return colors[randomIndex];
   };
 
-  const animateFirework = (firework: Element) => {
-    const animationDuration = Math.random() * 2 + 1;
+  const animateFirework = (firework: HTMLElement) => {
+    const animationDuration = Math.random() * 5 + 1; // Augmentez cette valeur pour ralentir l'animation
     const animationDelay = Math.random();
     const initialX = Math.random() * window.innerWidth;
     const initialY = Math.random() * window.innerHeight;
 
     firework.style.left = `${initialX}px`;
-    firework
-    .style.top = `${initialY}px`;
+    firework.style.top = `${initialY}px`;
     firework.style.animationDuration = `${animationDuration}s`;
     firework.style.animationDelay = `-${animationDelay}s`;
 

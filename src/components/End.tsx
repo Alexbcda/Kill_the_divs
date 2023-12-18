@@ -21,7 +21,7 @@ function End() {
   }, []);
   
   const createFireworks = (container: HTMLElement) => {
-    const numberOfFireworks = 10;
+    const numberOfFireworks = 50;
 
     for (let i = 0; i < numberOfFireworks; i++) {
       const firework = document.createElement('div');

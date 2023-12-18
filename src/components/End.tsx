@@ -40,7 +40,7 @@ function End() {
   };
 
   const animateFirework = (firework: HTMLElement) => {
-    const animationDuration = Math.random() * 5 + 1; // Augmentez cette valeur pour ralentir l'animation
+    const animationDuration = Math.random() * 5 + 1; // Augmentez la valeur pour ralentir l'animation
     const animationDelay = Math.random();
     const initialX = Math.random() * window.innerWidth;
     const initialY = Math.random() * window.innerHeight;
@@ -51,7 +51,7 @@ function End() {
     firework.style.animationDelay = `-${animationDelay}s`;
 
     firework.addEventListener('animationiteration', () => {
-      // Réinitialiser la position après chaque itération de l'animation
+     
       const newX = Math.random() * window.innerWidth;
       const newY = Math.random() * window.innerHeight;
       firework.style.left = `${newX}px`;

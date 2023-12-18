@@ -17,7 +17,7 @@ function Game() {
       setTimeElapsed(prevTime => prevTime + 1);
     }, 1000);
 
-    // Nettoyer l'intervalle lorsque le composant est démonté
+    // remise a zero de l'interval
     return () => clearInterval(interval);
   }, []);
 

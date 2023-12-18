@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-console.log("Ttoto")
+
 function Game() {
   const navigate = useNavigate();
   const [totalClicks, setTotalClicks] = useState<number>(0);
@@ -14,12 +14,12 @@ function Game() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeElapsed(timeElapsed + 1);
+      setTimeElapsed(prevTime => prevTime + 1);
     }, 1000);
 
     // Nettoyer l'intervalle lorsque le composant est démonté
     return () => clearInterval(interval);
-  }, [timeElapsed]);
+  }, []);
 
   useEffect(() => {
     if (totalClicks === 10) {

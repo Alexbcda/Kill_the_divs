@@ -1,0 +1,65 @@
+/* End.css */
+body {
+    overflow: hidden;
+  }
+  
+  .end-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .end-center h2,
+  .end-center p,
+  .end-center button {
+    margin-bottom: 20px;
+  }
+  
+  .fireworks-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  
+  .firework {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    animation: fireworksAnimation 10s ease-out infinite;
+    background-color: transparent;
+    border: 2px solid transparent;
+  }
+  
+  @keyframes fireworksAnimation {
+    0%, 100% {
+      opacity: 0;
+      transform: translateY(0) translateX(0);
+    }
+    10%, 90% {
+      opacity: 1;
+      transform: translateY(-50px) translateX(50px);
+    }
+    20%, 80% {
+      opacity: 0.5;
+      transform: translateY(-100px) translateX(100px);
+    }
+    30%, 70% {
+      opacity: 0.8;
+      transform: translateY(-150px) translateX(150px);
+    }
+    40%, 60% {
+      opacity: 0.3;
+      transform: translateY(-200px) translateX(200px);
+    }
+    50% {
+      opacity: 0;
+      transform: translateY(-250px) translateX(250px);
+    }
+  }
+  

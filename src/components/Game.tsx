@@ -40,7 +40,7 @@ function Game() {
   return (
     <div>
       <div className="game-screen" style={{ height: '100vh', width: '100vw' }}>
-        {/* Placer ici le code pour la div cible */}
+        {/* cible */}
         <div
           className={`target-div ${totalClicks === 10 ? 'hidden' : 'visible'}`}
           onClick={handleClick}

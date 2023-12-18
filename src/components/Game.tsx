@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+console.log("Ttoto")
 function Game() {
   const navigate = useNavigate();
   const [totalClicks, setTotalClicks] = useState<number>(0);

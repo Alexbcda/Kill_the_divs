@@ -16,7 +16,7 @@ function Game() {
       navigatorWithVibrate.vibrate([200, 100, 200]);
     }
 
-    // Reste de votre code de clic existant
+    // Reste de votre code de clic existantes
     audio.pause();
     audio.currentTime = 0;
     audio.play();

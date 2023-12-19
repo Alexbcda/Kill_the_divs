@@ -1,4 +1,3 @@
-// Gps.tsx
 import React, { useEffect } from 'react';
 
 interface GpsProps {
@@ -26,14 +25,28 @@ const Gps: React.FC<GpsProps> = ({ onCountryChange, onError }) => {
 
     const askForGeolocationPermission = async () => {
       try {
-        const permission = await navigator.permissions.query({ name: 'geolocation' });
-        
-        if (permission.state === 'granted') {
+        // Vérifier si l'utilisateur a déjà autorisé la géolocalisation
+        const result = await navigator.permissions.query({ name: 'geolocation' });
+        const isGeolocationEnabled = result.state === 'granted';
+
+        if (isGeolocationEnabled) {
+          // Si l'utilisateur a déjà autorisé, obtenir la position
           navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-        } else if (permission.state === 'prompt') {
-          // Continuez avec la demande de permission ici si nécessaire
         } else {
-          console.error("Permission refusée pour accéder à la géolocalisation.");
+          // Sinon, demander la permission
+          const permissionGranted = await new Promise<boolean>((resolve) => {
+            if (window.confirm("Pour utiliser cette application, veuillez autoriser l'accès à votre position.")) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          });
+
+          if (permissionGranted) {
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+          } else {
+            console.error("Permission refusée pour accéder à la géolocalisation.");
+          }
         }
       } catch (error) {
         console.error("Erreur lors de la demande de permission de géolocalisation:", error);

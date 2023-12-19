@@ -1,7 +1,6 @@
 // Game.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Gps from './Gps'; 
 const audio = new Audio('/Sons/vaiana.mp3');
 const navigatorWithVibrate = navigator as Navigator & { vibrate: (pattern: number | number[]) => boolean };
 
@@ -60,10 +59,30 @@ function Game() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const fetchCountryFromApi = async (latitude, longitude) => {
+      try {
+        const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+        const data = await response.json();
+        setUserCountry(data.countryName);
+      } catch (error) {
+        console.error('Erreur lors de la récupération du pays:', error);
+      }
+    };
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        fetchCountryFromApi(latitude, longitude);
+      },
+      (error) => {
+        console.error('Erreur de géolocalisation:', error);
+      }
+    );
+  }, []); // Le tableau vide assure que le useEffect est exécuté une seule fois au montage
+
   return (
     <div>
-      <Gps onCountryChange={handleCountryChange} onError={handleCoordsError} />
-
       <div className="game-screen" style={{ height: '100vh', width: '100vw' }}>
         {/* cible */}
         <div
@@ -72,7 +91,6 @@ function Game() {
           style={{ top: targetPosition.top, left: targetPosition.left }}
         ></div>
 
-      
         <div className="counter">Clics : {totalClicks}</div>
         <div className="timer">Temps : {timeElapsed} sec</div>
         <div className="user-country">Pays : {userCountry}</div>

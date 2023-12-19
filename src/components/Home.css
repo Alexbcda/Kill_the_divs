@@ -1,15 +1,55 @@
-/* Home.css */
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Home.css';
 
-.home-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; 
-    background-color: black;
-  }
-  
-  .home-center h1 {
-    margin-bottom: 20px; 
-  }
-  
+function Home() {
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (event) => {
+      // Empêcher le navigateur de gérer automatiquement l'événement
+      event.preventDefault();
+      // Stocker l'événement pour l'utiliser ultérieurement
+      setDeferredPrompt(event);
+    };
+
+    // Écouter l'événement beforeinstallprompt
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      // Nettoyer l'écouteur d'événement lors du démontage du composant
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      // Afficher la boîte de dialogue d'installation
+      deferredPrompt.prompt();
+      // Attendre la réponse de l'utilisateur
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('L\'utilisateur a installé l\'application');
+        } else {
+          console.log('L\'utilisateur a refusé l\'installation de l\'application');
+        }
+        // Réinitialiser deferredPrompt après utilisation
+        setDeferredPrompt(null);
+      });
+    }
+  };
+
+  return (
+    <div className="home-center">
+      <h1>Bienvenue!</h1>
+      <Link to="/game">
+        <button>Start</button>
+      </Link>
+      {deferredPrompt && (
+        <button onClick={handleInstallClick}>Installer l'application</button>
+      )}
+    </div>
+  );
+}
+
+export default Home;

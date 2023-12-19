@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const audio = new Audio('/Sons/Beretta.mp3');
+const audio = new Audio('/Sons/vaiana.mp3');
 const navigatorWithVibrate = navigator as Navigator & { vibrate: (pattern: number | number[]) => boolean };
 
 function Game() {

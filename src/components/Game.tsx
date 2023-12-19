@@ -13,7 +13,6 @@ function Game() {
   const handleClick = useCallback(() => {
     // Ajoutez la vibration lors du clic
     if (navigatorWithVibrate && navigatorWithVibrate.vibrate) {
-      // Modifiez le modèle de vibration ici pour ajuster la force et la durée
       navigatorWithVibrate.vibrate([200, 100, 200]);
     }
 
@@ -34,19 +33,10 @@ function Game() {
   }, []);
 
   useEffect(() => {
-    if (totalClicks === 4) {
-      // Vérifiez si les notifications sont prises en charge par le navigateur
-      if ('Notification' in window) {
-        // Demandez la permission d'afficher des notifications
-        Notification.requestPermission().then((permission) => {
-          if (permission === 'granted') {
-            // Affiche la notification avec le temps total
-            new Notification(`Félicitations! Vous avez cliqué 10 fois en ${timeElapsed} secondes.`);
-          }
-        });
-      }
+    if (totalClicks === 2) {
+      navigate('/end', { state: { totalTime: timeElapsed } });
     }
-  }, [totalClicks, timeElapsed]);
+  }, [totalClicks, timeElapsed, navigate]);
 
   const generateRandomPosition = () => {
     const windowHeight = window.innerHeight;

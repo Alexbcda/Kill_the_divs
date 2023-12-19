@@ -33,7 +33,7 @@ function Game() {
   }, []);
 
   useEffect(() => {
-    if (totalClicks === 2) {
+    if (totalClicks === 4) {
       navigate('/end', { state: { totalTime: timeElapsed } });
     }
   }, [totalClicks, timeElapsed, navigate]);

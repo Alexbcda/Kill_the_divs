@@ -33,10 +33,19 @@ function Game() {
   }, []);
 
   useEffect(() => {
-    if (totalClicks === 2) {
-      navigate('/end', { state: { totalTime: timeElapsed } });
+    if (totalClicks === 4) {
+      // Vérifiez si les notifications sont prises en charge par le navigateur
+      if ('Notification' in window) {
+        // Demandez la permission d'afficher des notifications
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            // Affiche la notification avec le temps total
+            new Notification(`Félicitations! Vous avez cliqué 4 fois en ${timeElapsed} secondes.`);
+          }
+        });
+      }
     }
-  }, [totalClicks, timeElapsed, navigate]);
+  }, [totalClicks, timeElapsed]);
 
   const generateRandomPosition = () => {
     const windowHeight = window.innerHeight;

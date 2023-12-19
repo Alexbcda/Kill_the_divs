@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+// Game.tsx
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import Gps from './Gps'; 
 const audio = new Audio('/Sons/vaiana.mp3');
 const navigatorWithVibrate = navigator as Navigator & { vibrate: (pattern: number | number[]) => boolean };
 
@@ -9,31 +10,34 @@ function Game() {
   const [totalClicks, setTotalClicks] = useState<number>(0);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   const [targetPosition, setTargetPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [userCountry, setUserCountry] = useState<string | null>(null);
 
-  const handleClick = useCallback(() => {
-    // Ajoutez la vibration lors du clic
+  const handleClick = () => {
+    
     if (navigatorWithVibrate && navigatorWithVibrate.vibrate) {
       navigatorWithVibrate.vibrate([200, 100, 200]);
     }
 
-    // Reste de votre code de clic existantes
+    
     audio.pause();
     audio.currentTime = 0;
     audio.play();
     setTotalClicks((prevClicks) => prevClicks + 1);
     setTargetPosition(generateRandomPosition());
-  }, []);
+  };
+
+  const handleCountryChange = (country: string) => {
+    setUserCountry(country);
+  };
+
+  const handleCoordsError = (error: GeolocationPositionError) => {
+    console.error('Erreur de géolocalisation:', error);
+  };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeElapsed((prevTime) => prevTime + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
+   
     if (totalClicks === 4) {
+      
       navigate('/end', { state: { totalTime: timeElapsed } });
     }
   }, [totalClicks, timeElapsed, navigate]);
@@ -48,19 +52,30 @@ function Game() {
     return { top, left };
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeElapsed((prevTime) => prevTime + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div>
+      <Gps onCountryChange={handleCountryChange} onError={handleCoordsError} />
+
       <div className="game-screen" style={{ height: '100vh', width: '100vw' }}>
         {/* cible */}
         <div
-          className={`target-div ${totalClicks === 10 ? 'hidden' : 'visible'}`}
+          className={`target-div ${totalClicks === 4 ? 'hidden' : 'visible'}`}
           onClick={handleClick}
           style={{ top: targetPosition.top, left: targetPosition.left }}
         ></div>
 
-        {/* Afficher le compteur de clics et le chrono */}
+      
         <div className="counter">Clics : {totalClicks}</div>
         <div className="timer">Temps : {timeElapsed} sec</div>
+        <div className="user-country">Pays : {userCountry}</div>
       </div>
     </div>
   );

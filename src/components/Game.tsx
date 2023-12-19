@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const audio = new Audio('/Sons/Beretta.mp3');
+const navigatorWithVibrate = navigator as Navigator & { vibrate: (pattern: number | number[]) => boolean };
+
 function Game() {
   const navigate = useNavigate();
   const [totalClicks, setTotalClicks] = useState<number>(0);
@@ -8,21 +11,29 @@ function Game() {
   const [targetPosition, setTargetPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
 
   const handleClick = useCallback(() => {
-    setTotalClicks(prevClicks => prevClicks + 1);
+    // Ajoutez la vibration lors du clic
+    if (navigatorWithVibrate && navigatorWithVibrate.vibrate) {
+      navigatorWithVibrate.vibrate([100, 50, 100]);
+    }
+
+    // Reste de votre code de clic existant
+    audio.pause();
+    audio.currentTime = 0;
+    audio.play();
+    setTotalClicks((prevClicks) => prevClicks + 1);
     setTargetPosition(generateRandomPosition());
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeElapsed(prevTime => prevTime + 1);
+      setTimeElapsed((prevTime) => prevTime + 1);
     }, 1000);
 
-    // remise a zero de l'interval
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    if (totalClicks === 10) {
+    if (totalClicks === 2) {
       navigate('/end', { state: { totalTime: timeElapsed } });
     }
   }, [totalClicks, timeElapsed, navigate]);

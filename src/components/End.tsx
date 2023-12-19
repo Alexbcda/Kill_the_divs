@@ -9,7 +9,6 @@ function End() {
   const totalTime = location.state?.totalTime || 0; // Récupérer le temps total
 
   const handleReplay = () => {
-    // Logique pour réinitialiser le jeu
     navigate('/game');
   };
 

@@ -13,7 +13,8 @@ function Game() {
   const handleClick = useCallback(() => {
     // Ajoutez la vibration lors du clic
     if (navigatorWithVibrate && navigatorWithVibrate.vibrate) {
-      navigatorWithVibrate.vibrate([100, 50, 100]);
+      // Modifiez le modèle de vibration ici pour ajuster la force et la durée
+      navigatorWithVibrate.vibrate([200, 100, 200]);
     }
 
     // Reste de votre code de clic existant
@@ -40,7 +41,7 @@ function Game() {
         Notification.requestPermission().then((permission) => {
           if (permission === 'granted') {
             // Affiche la notification avec le temps total
-            new Notification(`Félicitations! Vous avez cliqué 4 fois en ${timeElapsed} secondes.`);
+            new Notification(`Félicitations! Vous avez cliqué 10 fois en ${timeElapsed} secondes.`);
           }
         });
       }

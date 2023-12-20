@@ -1,7 +1,9 @@
-// Game.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-const audio = new Audio('/Sons/vaiana.mp3');
+import FullscreenButton from './FullscreenButton';  // Assurez-vous d'avoir le bon chemin d'importation
+import Api from './Api'; 
+
+const audio = new Audio('/Sons/Beretta.mp3');
 const navigatorWithVibrate = navigator as Navigator & { vibrate: (pattern: number | number[]) => boolean };
 
 function Game() {
@@ -12,7 +14,6 @@ function Game() {
   const [userCountry, setUserCountry] = useState<string | null>(null);
 
   const handleClick = () => {
-    
     if (navigatorWithVibrate && navigatorWithVibrate.vibrate) {
       navigatorWithVibrate.vibrate([200, 100, 200]);
     }
@@ -23,18 +24,8 @@ function Game() {
     setTargetPosition(generateRandomPosition());
   };
 
-  const handleCountryChange = (country: string) => {
-    setUserCountry(country);
-  };
-
-  const handleCoordsError = (error: GeolocationPositionError) => {
-    console.error('Erreur de géolocalisation:', error);
-  };
-
   useEffect(() => {
-   
-    if (totalClicks === 4) {
-      
+    if (totalClicks === 10) {
       navigate('/end', { state: { totalTime: timeElapsed } });
     }
   }, [totalClicks, timeElapsed, navigate]);
@@ -49,40 +40,10 @@ function Game() {
     return { top, left };
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeElapsed((prevTime) => prevTime + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const fetchCountryFromApi = async (latitude : number, longitude: number) => {
-      try {
-        const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
-        const data = await response.json();
-        setUserCountry(data.countryName);
-      } catch (error) {
-        console.error('Erreur lors de la récupération du pays:', error);
-      }
-    };
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        fetchCountryFromApi(latitude, longitude);
-      },
-      (error) => {
-        console.error('Erreur de géolocalisation:', error);
-      }
-    );
-  }, []); // Le tableau vide assure que le useEffect est exécuté une seule fois au montage
-
   return (
     <div>
-      <div className="game-screen" style={{ height: '100vh', width: '100vw' }}>
-        {/* cible */}
+      <Api setUserCountry={setUserCountry} setTimeElapsed={setTimeElapsed} />
+      <div className="game-screen" id="gameScreen" style={{ height: '100vh', width: '100vw' }}>
         <div
           className={`target-div ${totalClicks === 4 ? 'hidden' : 'visible'}`}
           onClick={handleClick}
@@ -92,6 +53,10 @@ function Game() {
         <div className="counter">Clics : {totalClicks}</div>
         <div className="timer">Temps : {timeElapsed} sec</div>
         <div className="user-country">Pays : {userCountry}</div>
+
+        {/* Bouton de plein écran */}
+        <FullscreenButton targetElementId="gameScreen" />
+        
       </div>
     </div>
   );

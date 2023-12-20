@@ -3,17 +3,18 @@ import { Link } from 'react-router-dom';
 import './Home.css';
 import { BeforeInstallPromptEvent } from './types';  
 import Share from './Share';
+import FullscreenButton from './FullscreenButton';
 
 
 function Home() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
-    // ... (Votre code pour gérer l'installation différée)
+
   }, []);
 
   const handleInstallClick = () => {
-    // ... (Votre code pour gérer l'installation)
+    
   };
 
   return (
@@ -29,8 +30,8 @@ function Home() {
       
       {/* Utilisation du composant Share pour le partage */}
       <Share 
-        title="Nom de votre application"
-        text="Description de votre application"
+        title="kill-the-divs"
+        text="Cliques le plus vite possible"
         url={window.location.href}
       />
 

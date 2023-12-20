@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FullscreenButton from './FullscreenButton';  // Assurez-vous d'avoir le bon chemin d'importation
+import FullscreenButton from './FullscreenButton';  
 import Api from './Api'; 
 
 const audio = new Audio('/Sons/Beretta.mp3');
